@@ -1,0 +1,10 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 自分自身だけ編集可能とする
+    match /users/{userId} {
+    	allow read: if request.auth != null;
+      allow read, create: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}
